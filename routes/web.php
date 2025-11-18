@@ -8,7 +8,8 @@ use App\Http\Controllers\Auth\PasswordResetCodeController;
 // =====================
 // PUBLIC ROUTES
 // =====================
-Route::get('/', [UserController::class, 'index']);
+Route::get('/', [UserController::class, 'index'])->name('home');
+Route::get('/home', [UserController::class, 'index'])->name('home');
 
 // Find a table
 Route::post('/findatable', [UserController::class, 'findATable'])->name('book.table');
@@ -32,12 +33,15 @@ Route::middleware([
     Route::get('/foodcart', [UserController::class, 'foodCart'])->name('food.cart');
     Route::get('/drinkcart', [UserController::class, 'drinkCart'])->name('drink.cart');
 
-    Route::get('/foodcart/{id}', [UserController::class, 'removeCart'])->name('delete.cart');
-    Route::get('/drinkcart/{id}', [UserController::class, 'removeCart1'])->name('delete.cart1');
+    // FIXED: These should be DELETE routes, not GET with {id}
+    Route::get('/delete_cart/{id}', [UserController::class, 'removeCart'])->name('delete.cart');
+    Route::get('/delete_cart1/{id}', [UserController::class, 'removeCart1'])->name('delete.cart1');
 
-    Route::post('/confirm_order', [UserController::class, 'confirmOrderCart'])->name('cart.confirm');
-    Route::post('/confirm_order1', [UserController::class, 'confirmOrderCart1'])->name('cart.confirm1');
+    // FIXED: Added the confirm order routes
+    Route::post('/confirm_cart', [UserController::class, 'confirmOrderCart'])->name('cart.confirm');
+    Route::post('/confirm_cart1', [UserController::class, 'confirmOrderCart1'])->name('cart.confirm1');
 
+    // FIXED: Route names should match what's used in your UserController
     Route::get('/order_status', [UserController::class, 'orderStatus'])->name('order_status');
     Route::get('/order_status1', [UserController::class, 'orderStatus1'])->name('order_status1');
 });
